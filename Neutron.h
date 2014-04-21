@@ -14,6 +14,7 @@ namespace PulsR {
   public:
     unsigned long delta_time_stamp;
 
+
     Neutron();
     Neutron(unsigned short step_pin);
     Neutron(unsigned short step_pin, unsigned short direction_pin, unsigned short revert_direction_count);
@@ -22,9 +23,13 @@ namespace PulsR {
     void induct(unsigned int delta_time_stamp);
     void impact();
     void pulse();
+    bool isEmitting();
     bool isReady();
     bool isEmpty();
+
+
   private:
+
     // MEMO: i wrote this explicite to better comment each variable
 
     // Represents the pulse emitting pin
@@ -37,9 +42,10 @@ namespace PulsR {
 
     // signals that the neutron fires
     bool emitts;
-    bool direction_flag;
 
+    // last time which the neutron emitts an pulse
     unsigned long last_pulse;
+
     void pulseCallback();
 
   };

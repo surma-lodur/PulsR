@@ -17,19 +17,22 @@ namespace PulsR {
   Neutron::Neutron(unsigned short step_pin) {
     this->step_pin = step_pin;
     this->emitts = false;
-    ::pinMode(step_pin, OUTPUT);
-    ::digitalWrite(step_pin, LOW);
+    this->direction_pin = 0;
+    ::pinMode(this->step_pin, OUTPUT);
+    ::digitalWrite(this->step_pin, LOW);
     return;
   }
 
   Neutron::Neutron(unsigned short step_pin, unsigned short direction_pin, unsigned short revert_direction_count) {
     this->step_pin = step_pin;
     this->direction_pin = direction_pin;
+    this->revert_direction_count = revert_direction_count;
     this->step_counter = 0;
-    this->direction_flag = true;
     this->emitts = false;
-    ::pinMode(step_pin, OUTPUT);
-    ::digitalWrite(step_pin, LOW);
+    ::pinMode(this->step_pin, OUTPUT);
+    ::digitalWrite(this->step_pin, LOW);
+    ::pinMode(this->direction_pin, OUTPUT);
+    ::digitalWrite(this->direction_pin, LOW);
     return;
   }
 
@@ -46,18 +49,21 @@ namespace PulsR {
   }
 
   void Neutron::pulse() {
-    if (this-> emitts && (
-            (::micros() - this->last_pulse) > this->delta_time_stamp)
+    if (this->isEmitting() && ((::micros() - this->last_pulse) > this->delta_time_stamp)
             ) {
-      ::digitalWrite(step_pin, !::digitalRead(step_pin));
-      pulseCallback();
-      this->last_pulse = micros();
+      ::digitalWrite(this->step_pin, !::digitalRead(this->step_pin));
+      this->pulseCallback();
+      this->last_pulse = ::micros();
     }
     return;
   }
 
+  bool Neutron::isEmitting() {
+    return (this->emitts && this->step_pin > 0);
+  }
+
   bool Neutron::isReady() {
-    return (!this->emitts) && this->step_pin > 0;
+    return ((!this->emitts) && this->step_pin > 0);
   }
 
   bool Neutron::isEmpty() {
@@ -65,8 +71,12 @@ namespace PulsR {
   }
 
   void Neutron::pulseCallback() {
-    if (direction_pin != 0) {
+    if (this->direction_pin != 0) {
       this->step_counter++;
+      if (this->step_counter > this->revert_direction_count) {
+        ::digitalWrite(this->direction_pin, !::digitalRead(this->direction_pin));
+        this->step_counter = 0;
+      }
     }
     return;
   }
