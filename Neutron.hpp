@@ -25,14 +25,14 @@ namespace PulsR {
 
 class Neutron {
 public:
-  static unsigned short decay;
-  static unsigned short release;
+  volatile static unsigned short decay;
+  volatile static unsigned short release;
 
-  unsigned int delta_time_stamp;
-  unsigned long start_time_stamp;
-  unsigned short revert_direction_count;
+  volatile unsigned int delta_time_stamp;
+  volatile unsigned long start_time_stamp;
+  volatile unsigned short revert_direction_count;
 
-  bool released = false;
+  volatile bool released = false;
 
   Neutron();
   Neutron(unsigned short step_pin);

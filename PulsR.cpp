@@ -12,7 +12,7 @@ namespace PulsR {
 
 static Neutron stars[MAX_STARS];
 
-static bool add(Neutron *star) {
+[[maybe_unused]] static bool add(Neutron *star) {
   for (unsigned short i = 0; i < MAX_STARS; i++) {
     if (stars[i].isEmpty()) {
       stars[i] = *star;
@@ -22,7 +22,7 @@ static bool add(Neutron *star) {
   return false;
 }
 
-static bool add(unsigned short step_pin) {
+[[maybe_unused]] static bool add(unsigned short step_pin) {
   for (unsigned short i = 0; i < MAX_STARS; i++) {
     if (stars[i].isEmpty()) {
       stars[i].setStepPin(step_pin);
@@ -32,7 +32,8 @@ static bool add(unsigned short step_pin) {
   return false;
 }
 
-static bool add(unsigned short step_pin, unsigned short direction_pin) {
+[[maybe_unused]] static bool add(unsigned short step_pin,
+                                 unsigned short direction_pin) {
   for (unsigned short i = 0; i < MAX_STARS; i++) {
     if (stars[i].isEmpty()) {
       stars[i].setStepPin(step_pin);
@@ -43,8 +44,9 @@ static bool add(unsigned short step_pin, unsigned short direction_pin) {
   return false;
 }
 
-static bool add(unsigned short step_pin, unsigned short direction_pin,
-                unsigned short revert_direction_count) {
+[[maybe_unused]] static bool add(unsigned short step_pin,
+                                 unsigned short direction_pin,
+                                 unsigned short revert_direction_count) {
   for (unsigned short i = 0; i < MAX_STARS; i++) {
     if (stars[i].isEmpty()) {
       stars[i].setStepPin(step_pin);
@@ -56,7 +58,7 @@ static bool add(unsigned short step_pin, unsigned short direction_pin,
   return false;
 }
 
-static unsigned short starsReady() {
+[[maybe_unused]] static unsigned short starsReady() {
   unsigned short count = 0;
   for (unsigned short i = 0; i < MAX_STARS; i++) {
     if (stars[i].isReady())
@@ -65,7 +67,7 @@ static unsigned short starsReady() {
   return count;
 }
 
-static void inspectStars() {
+[[maybe_unused]] static void inspectStars() {
 #ifndef DEBUG
   return;
 #else
@@ -88,7 +90,7 @@ static void inspectStars() {
 #endif
 }
 
-static bool pulses(unsigned long delta_micros) {
+[[maybe_unused]] static bool pulses(unsigned long delta_micros) {
   for (unsigned short i = 0; i < MAX_STARS; i++) {
     if (stars[i].isReady()) {
       stars[i].induct(delta_micros);
@@ -98,7 +100,7 @@ static bool pulses(unsigned long delta_micros) {
   return false;
 }
 
-static bool collapse(unsigned long delta_micros) {
+[[maybe_unused]] static bool collapse(unsigned long delta_micros) {
   for (unsigned short i = 0; i < MAX_STARS; i++) {
     if (!stars[i].isReady() && stars[i].delta_time_stamp == delta_micros) {
       stars[i].impact();
@@ -108,19 +110,19 @@ static bool collapse(unsigned long delta_micros) {
   return false;
 }
 
-static void rotate() {
+[[maybe_unused]] static void rotate() {
   for (unsigned short i = 0; i < MAX_STARS; i++) {
     stars[i].pulse(::micros(), ::millis());
   }
 }
 
-static void reset() {
+[[maybe_unused]] static void reset() {
   for (unsigned short i = 0; i < MAX_STARS; i++) {
     stars[i].reset();
   }
 }
 
-static void detune(long tune) {
+[[maybe_unused]] static void detune(long tune) {
   for (unsigned short i = 0; i < MAX_STARS; i++) {
     stars[i].delta_time_stamp += tune;
   }

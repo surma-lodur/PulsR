@@ -12,8 +12,8 @@ namespace PulsR {
 #define OUTPUT true
 #endif
 
-unsigned short Neutron::decay = DECAY;
-unsigned short Neutron::release = RELEASE;
+volatile unsigned short Neutron::decay = DECAY;
+volatile unsigned short Neutron::release = RELEASE;
 
 Neutron::Neutron() {
   this->start_time_stamp = 0;
@@ -111,6 +111,15 @@ void Neutron::inspect() {
   Serial.println(Neutron::release);
   Serial.println("");
 
+  Serial.print("> step_pin: ");
+  Serial.println(this->step_pin);
+
+  Serial.print("> direction_pin: ");
+  Serial.println(this->direction_pin);
+
+  Serial.print("> revert_direction_count: ");
+  Serial.println(this->revert_direction_count);
+
   Serial.print("> delta_time_stamp: ");
   Serial.println(this->delta_time_stamp);
 
@@ -142,7 +151,7 @@ void Neutron::setStepPin(unsigned short step_pin) {
   ::digitalWrite(this->step_pin, LOW);
 };
 
-void Neutron::setDirectionPin(unsigned short step_pin) {
+void Neutron::setDirectionPin(unsigned short direction_pin) {
   this->direction_pin = direction_pin;
   ::pinMode(this->direction_pin, OUTPUT);
   ::digitalWrite(this->direction_pin, LOW);
